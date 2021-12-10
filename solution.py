@@ -86,23 +86,23 @@ def get_route(hostname):
             mySocket.settimeout(TIMEOUT)
             try:
                 d = build_packet()
-                mySocket.sendto(d, hostname, 0)
+                mySocket.sendto(d, (destAddr, 0))
                 t = time.time()
                 startedSelect = time.time()
                 whatReady = select.select([mySocket], [], [], timeLeft)
                 howLongInSelect = (time.time() - startedSelect)
 
-                #if whatReady[0] == []:  # Timeout
-                   # tracelist1.append("* * * Request timed out.")
-                    #print("*    *    * Request timed out.")
+                if whatReady[0] == []:  # Timeout
+                    tracelist1.append("* * * Request timed out.")
+                    print("*    *    * Request timed out.")
 
                 recvPacket, addr = mySocket.recvfrom(1024).decode()
-                #print(addr)
+                print(addr)
                 timeReceived = time.time()
                 timeLeft = timeLeft - howLongInSelect
 
-                #if timeLeft <= 0:
-                    #print("*    *    * Request timed out.")
+                if timeLeft <= 0:
+                    print("*    *    * Request timed out.")
 
             except timeout:
                 continue
@@ -110,7 +110,7 @@ def get_route(hostname):
             else:
                 icmpHeader = recvPacket[20:28]
                 request_type, code, checksum, packetID, sequence = struct.unpack("bbHHh", icmpHeader)
-'''
+
                 if request_type == 11:
                     bytes = struct.calcsize("d")
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
@@ -130,9 +130,9 @@ def get_route(hostname):
             finally:
                 mySocket.close()
 
+'''
 
-
-print("--------------------------------------------")                
+print("--------------------------------------------")
 print ('www.google.com')
 print("--------------------------------------------")
 get_route("www.google.com") # USA - North America
@@ -152,5 +152,5 @@ print ('www.mybroadband.co.za')
 print("--------------------------------------------")
 get_route('www.mybroadband.co.za') # some place in Africa
 '''
-if __name__ == "__main__":
-    get_route(int("www.makeinindia.com"))
+#if __name__ == "__main__":
+get_route('www.makeinindia.com')
