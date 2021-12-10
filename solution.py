@@ -67,9 +67,11 @@ def build_packet():
 
 def get_route(hostname):
     timeLeft = TIMEOUT
+    tracelist1 = []  # This is your list to use when iterating through each trace
+    tracelist2 = []  # This is your list to contain all traces
     for ttl in range(1, MAX_HOPS):
         for tries in range(TRIES):
-            destAddr = gethostname()
+            destAddr = gethostbyname(hostname)
 
             # Fill in start
             # Make a raw socket named mySocket
@@ -77,7 +79,7 @@ def get_route(hostname):
             mySocket.bind(('localhost',0))
             icmp = getprotobyname("icmp")
             # mySocket = socket.socket(socket.AF_INET, socket.SOCK_RAW, icmp)
-            mySocket = socket(AF_INET, SOCK_DGRAM, icmp)
+            #mySocket = socket(AF_INET, SOCK_DGRAM, icmp)
             # Fill in end
 
             mySocket.setsockopt(IPPROTO_IP, IP_TTL, struct.pack('I', ttl))
@@ -91,6 +93,7 @@ def get_route(hostname):
                 howLongInSelect = (time.time() - startedSelect)
 
                 if whatReady[0] == []:  # Timeout
+                    tracelist1.append("* * * Request timed out.")
                     print("*    *    * Request timed out.")
 
                 recvPacket, addr = mySocket.recvfrom(1024)
@@ -101,7 +104,7 @@ def get_route(hostname):
                 if timeLeft <= 0:
                     print("*    *    * Request timed out.")
 
-            except socket.timeout:
+            except timeout:
                 continue
 
             else:
