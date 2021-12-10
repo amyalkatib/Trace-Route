@@ -1,7 +1,6 @@
 from socket import *
 import os
 import sys
-import solution
 import struct
 import time
 import select
@@ -93,17 +92,17 @@ def get_route(hostname):
                 whatReady = select.select([mySocket], [], [], timeLeft)
                 howLongInSelect = (time.time() - startedSelect)
 
-                if whatReady[0] == []:  # Timeout
-                    tracelist1.append("* * * Request timed out.")
-                    print("*    *    * Request timed out.")
+                #if whatReady[0] == []:  # Timeout
+                   # tracelist1.append("* * * Request timed out.")
+                    #print("*    *    * Request timed out.")
 
                 recvPacket, addr = mySocket.recvfrom(1024)
-                print(addr)
+                #print(addr)
                 timeReceived = time.time()
                 timeLeft = timeLeft - howLongInSelect
 
-                if timeLeft <= 0:
-                    print("*    *    * Request timed out.")
+                #if timeLeft <= 0:
+                    #print("*    *    * Request timed out.")
 
             except timeout:
                 continue
@@ -111,7 +110,7 @@ def get_route(hostname):
             else:
                 icmpHeader = recvPacket[20:28]
                 request_type, code, checksum, packetID, sequence = struct.unpack("bbHHh", icmpHeader)
-
+'''
                 if request_type == 11:
                     bytes = struct.calcsize("d")
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
