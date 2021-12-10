@@ -86,7 +86,7 @@ def get_route(hostname):
             mySocket.settimeout(TIMEOUT)
             try:
                 d = build_packet()
-                mySocket.sendto((d, (hostname, 0)))
+                mySocket.sendto(d, hostname, 0)
                 t = time.time()
                 startedSelect = time.time()
                 whatReady = select.select([mySocket], [], [], timeLeft)
@@ -153,4 +153,4 @@ print("--------------------------------------------")
 get_route('www.mybroadband.co.za') # some place in Africa
 '''
 
-get_route('www.makeinindia.com')
+get_route("www.makeinindia.com")
