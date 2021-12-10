@@ -152,5 +152,5 @@ print ('www.mybroadband.co.za')
 print("--------------------------------------------")
 get_route('www.mybroadband.co.za') # some place in Africa
 '''
-
-get_route("www.makeinindia.com")
+if __name__ == "__main__":
+    get_route("www.makeinindia.com")
